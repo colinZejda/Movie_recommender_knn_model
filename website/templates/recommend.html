@@ -1,0 +1,27 @@
+<!-- Purpose: provide a home page. We'll do so by extending base.html using Jinja-->
+
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+  %}
+  <h1 align="center">Enter a Movie!</h1>
+
+  {% for movie in user.recommended  %}
+      {{ movie.found_title if movie.found_title else '' }}
+  {% endfor %}
+
+  <ul class="list-group list-group-flush" id="recommended_movies">
+    {% for movie in user.recommended[:10]  %}
+    <li class="list-group-item">
+      {{ movie.data }}
+    </li>
+    {% endfor %}
+  </ul>
+
+  <form method="POST">
+    <textarea name="movie" id="movie" class="form-control"></textarea>
+    <br />
+    <div align="center">
+      <button type="submit" class="btn btn-primary">Give me 10 movie recommendations!</button>
+    </div>
+  </form>
+
+  {% endblock %}

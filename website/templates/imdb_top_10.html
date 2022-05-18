@@ -1,0 +1,16 @@
+<!-- Purpose: provide a home page. We'll do so by extending base.html using Jinja-->
+
+{% extends "base.html" %} {% block title %}imdb_top_10{% endblock %} {% block content
+    %}
+    <h1 align="center">Top 10 IMDB movies right now</h1>
+  
+    <ul class="list-group list-group-flush" id="imdb_top_10">
+      {% for movie in user.imdb_top_10  %}
+        <li class="list-group-item">
+            {{ movie.data }}
+        </li>
+      {% endfor %}
+    </ul>
+  
+    {% endblock %}
+  
