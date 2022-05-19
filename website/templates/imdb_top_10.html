@@ -3,14 +3,18 @@
 {% extends "base.html" %} {% block title %}imdb_top_10{% endblock %} {% block content
     %}
     <h1 align="center">Top 10 IMDB movies right now</h1>
-  
+    
     <ul class="list-group list-group-flush" id="imdb_top_10">
-      {% for movie in user.imdb_top_10  %}
-        <li class="list-group-item">
-            {{ movie.data }}
-        </li>
+      {% for movie in user.imdb_top_10[:10] %}
+      <li class="list-group-item">
+        {{ movie.data}}
+        <ol style="list-style-type: lower-alpha;"><a href= "{{ movie.link1 }}" target=“_blank”> a) IMDB Page </a></ol>
+        <ol style="padding-top: 0px; padding-bottom: 0px;"><a href= "{{ movie.link2 }}" target=“_blank”> b) Google Search </a></ol>
+        <ol><img src= "{{ movie.img_link }}" style="width:150px;"></ol>
+      </li>
       {% endfor %}
     </ul>
-  
+    
+
     {% endblock %}
   
