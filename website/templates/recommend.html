@@ -2,7 +2,7 @@
 
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
   %}
-  <h1 align="center">Enter a Movie!</h1>
+  <h1 align="center">Recommendation time! Enter a keyword:</h1>
 
   {% for movie in user.recommended  %}
       {{ movie.found_title if movie.found_title else '' }}
@@ -12,6 +12,9 @@
     {% for movie in user.recommended[:10]  %}
     <li class="list-group-item">
       {{ movie.data }}
+      <ol style="list-style-type: lower-alpha;"><a href= "{{ movie.link1 }}" target=“_blank”> a) IMDB Page </a></ol>
+      <ol style="padding-top: 0px; padding-bottom: 0px;"><a href= "{{ movie.link2 }}" target=“_blank”> b) Google Search </a></ol>
+      <ol><img src= "{{ movie.img_link }}" style="width:150px;"></ol>
     </li>
     {% endfor %}
   </ul>
