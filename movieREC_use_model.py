@@ -46,11 +46,8 @@ def get_movie_recommendation(movie_name):
             recommend_frame.append({'Title':movies.iloc[idx]['title'].values[0],'Distance':val[1]})
         df = pd.DataFrame(recommend_frame,index=range(1,n_movies_to_recommend+1))
         return df, found_movie
-    
     else:
-        
         return "No movies found. Please check your input", None
-
 
 
 def rec_10(user_movie):
@@ -58,7 +55,10 @@ def rec_10(user_movie):
     user_movie = user_movie.title()
     try:
         df, found_movie = get_movie_recommendation(user_movie)
-        return df, found_movie
+        if found_movie:
+            return df, found_movie
+        else:
+            return df, user_movie
     except IndexError:        # we get this a lot, especially when entering 'garfield' or 'comedy'
         # please try another movie
         print("Sorry")
