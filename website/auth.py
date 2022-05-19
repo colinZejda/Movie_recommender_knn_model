@@ -21,7 +21,7 @@ def login():
             if check_password_hash(user.password, password):       # hash password, check against user.password
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)                    # remember to keep user signed in until the session data is wiped. So when the flask server is restarted, this will become False
-                return redirect(url_for('views.home'))
+                return redirect(url_for('views.recommend'))
             else:
                 flash('Incorrect password, try again.', category='error')    # wrong password
         else:
@@ -63,7 +63,7 @@ def sign_up():
             db.session.add(new_user)            # add new user to db (created in __init__.py)
             db.session.commit()                 # commit changes to db
             login_user(new_user, remember=True)
-            flash('Account created!', category='success')
+            flash('Account created! Welcome!', category='success')
             return redirect(url_for('views.home'))    # redirect to home page since sign up was successful (and we'll log the user in automatically). views.home is in format: blueprint.function
 
     return render_template("sign_up.html", user=current_user)
