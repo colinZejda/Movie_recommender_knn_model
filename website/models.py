@@ -6,8 +6,11 @@ from sqlalchemy.sql import func    # sql alchemy will take care of date/time for
 
 class Recommended(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    found_title = db.Column(db.String(1000))
-    data = db.Column(db.String(10000))
+    found_title = db.Column(db.String(1000))  # movie title (user entered)
+    data = db.Column(db.String(10000))        # movie title (recommended)
+    link1 = db.Column(db.String(1000))        # IMDB page
+    link2 = db.Column(db.String(1000))        # google search
+    img_link = db.Column(db.String(1000))     # 1st img on IMDB site
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -19,7 +22,10 @@ class Note(db.Model):
 
 class IMDB_top_10(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    data = db.Column(db.String(10000))
+    data = db.Column(db.String(10000))        # movie title
+    link1 = db.Column(db.String(1000))        # IMDB page
+    link2 = db.Column(db.String(1000))        # google search
+    img_link = db.Column(db.String(1000))     # 1st img on IMDB site
     date = db.Column(db.DateTime(timezone=True), default=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
