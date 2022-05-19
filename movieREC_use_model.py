@@ -73,9 +73,3 @@ if __name__ == '__main__':
     recommendations = titles_only(str(ten_rec))
     print("Found movie: ", found_movie)
     print('\n'.join(recommendations))
-
-
-"""
-    -- IMDB api that returns a picture of the movie
-    -- and get 
-"""
