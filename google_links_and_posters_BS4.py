@@ -38,8 +38,8 @@ def get_image(url):
 
 def compute_three(movie_name, results, index):
     try:
-        L1 = get_google_page(movie_name)
-        L2 = get_google_1st_link(movie_name)
+        L1 = get_google_1st_link(movie_name)
+        L2 = get_google_page(movie_name)
         L3 = get_image(get_google_1st_link(movie_name))
         results[index] = (L1, L2, L3)
     except:
