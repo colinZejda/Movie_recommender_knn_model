@@ -7,6 +7,7 @@ from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
 from .models import Note, Recommended, IMDB_top_10
 from . import db 
+from google_links_and_posters_BS4 import get_google_1st_link, get_google_page, get_image
 from movieREC_use_model import rec_10, titles_only
 from imdb_get_top_ten import get_top_10_imdb
 import json
@@ -14,7 +15,7 @@ import json
 views = Blueprint('views', __name__)       # set up a views blueprint for our flask application
 
 
-@views.route('/home', methods=['GET', 'POST']) # define 1st view (this is a decorator)
+@views.route('/journal', methods=['GET', 'POST']) # define 1st view (this is a decorator)
 @login_required                            # 2nd decorator, cannot get to home pg without loggin in
 def home():
     if request.method == 'POST':
@@ -26,14 +27,14 @@ def home():
             new_note = Note(data=note, user_id=current_user.id)
             db.session.add(new_note)
             db.session.commit()
-            flash('Note added!', category='success')
+            #flash('Journal entry added!', category='success')
 
-    return render_template("home.html", user=current_user)
+    return render_template("journal.html", user=current_user)
 
 @views.route('/recommend', methods=['GET', 'POST']) # define 1st view (this is a decorator)
 @login_required                            # 2nd decorator, cannot get to home pg without loggin in
 def recommend():
-    for i in range(15):
+    for j in range(15):
         old_rec = Recommended.query.first()
         if old_rec:
             if old_rec.user_id == current_user.id:
@@ -54,9 +55,15 @@ def recommend():
                 x = 1
                 ten_rec, found_movie = rec_10(user_movie)
                 recommendations = titles_only(str(ten_rec))
-                for title in recommendations[:10]:
+                for title in recommendations[:7]:
+                    try:
+                        link1 = get_google_1st_link(title)
+                        link2 = get_google_page(title)
+                        img_link = get_image(link1)
+                    except:
+                        continue
                     title = str(x) + ') ' + str(title)
-                    new_rec = Recommended(data=title, user_id=current_user.id)
+                    new_rec = Recommended(data=title, link1=link1, link2=link2, img_link=img_link, user_id=current_user.id)
                     db.session.add(new_rec)
                     db.session.commit()
                     x += 1
@@ -74,20 +81,21 @@ def recommend():
 @views.route('/imdb_top_10', methods=['GET', 'POST']) # define 1st view (this is a decorator)
 @login_required                                       # 2nd decorator, cannot get to home pg without loggin in
 def imdb_top_10():
-    for i in range(20):
-        old_top_ten = IMDB_top_10.query.first()
-        if old_top_ten:
-            if old_top_ten.user_id == current_user.id:
-                db.session.delete(old_top_ten)
-                db.session.commit()
-        else:
-            break
-
     x = 1
     for movie in get_top_10_imdb():
+        movie = str(movie)
+        try:
+            link1 = get_google_1st_link(movie)
+            link2 = get_google_page(movie)
+            img_link = get_image(link1)
+        except:
+            link1 = get_google_1st_link(movie)
+            link2 = get_google_page(movie)
+            img_link = get_image(movie)
+            continue      # if we couldn't get a link or img, simply go to next suggestion
         movie = str(x) + ') ' + str(movie)
-        top_ten_movie = IMDB_top_10(data=str(movie), user_id=current_user.id)
-        db.session.add(top_ten_movie)
+        top_ten_movies = IMDB_top_10(data=str(movie), link1=link1, link2=link2, img_link=img_link, user_id=current_user.id)
+        db.session.add(top_ten_movies)
         db.session.commit()
         x += 1
 
